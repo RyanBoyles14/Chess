@@ -29,7 +29,7 @@ public class Piece{
     }
 
     public boolean isAlive() {
-        return false;
+        return alive;
     }
 
     public boolean atStart(){

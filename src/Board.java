@@ -18,7 +18,6 @@ public class Board {
                                 board[row][col] = new Piece(playerStart, "Rook", coord);
                                 break;
                             case 1:
-                                playerStart = !playerStart;
                             case 6:
                                 board[row][col] = new Piece(playerStart, "Knight", coord);
                                 break;
@@ -42,6 +41,23 @@ public class Board {
                 }
             }
         }
+    }
+
+    public Player setPlayer(Player p){
+        for(int row = 0; row < board.length; row++){
+            for(int col = 0; col < board.length; col++){
+                Piece piece = board[row][col];
+
+                if(piece == null)
+                    continue;
+
+                if((piece.isWhite() && p.isWhite())
+                        || (!piece.isWhite() && !p.isWhite()))
+                    p.addPiece(board[row][col]);
+            }
+        }
+
+        return p;
     }
 
     public void move(String command) throws MovementException{
