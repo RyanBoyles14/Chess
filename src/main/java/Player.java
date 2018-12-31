@@ -2,12 +2,12 @@ package main.java;
 
 public class Player {
     private boolean color;
-    private Piece king;
-    private Piece queen;
-    private Piece[] bishop = new Piece[2];
-    private Piece[] rook = new Piece[2];
-    private Piece[] knight = new Piece[2];
-    private Piece[] pawn = new Piece[8];
+    private IPiece king;
+    private IPiece queen;
+    private IPiece[] bishop = new Bishop[2];
+    private IPiece[] rook = new Rook[2];
+    private IPiece[] knight = new Knight[2];
+    private IPiece[] pawn = new Pawn[8];
     private boolean hasTurn;
 
     Player(boolean color){
@@ -16,8 +16,8 @@ public class Player {
 
     boolean isWhite(){return color;}
 
-    void addPiece(Piece p){
-        switch(p.getType()){
+    void addPiece(IPiece p){
+        switch(p.getClass().toString()){
             case "King":
                 king = p;
                 break;
@@ -41,7 +41,7 @@ public class Player {
     }
 
 
-    private void addToArray(Piece[] pieces, Piece p){
+    private void addToArray(IPiece[] pieces, IPiece p){
         for(int i = 0; i < pieces.length; i++)
             if(pieces[i] == null){
                 pieces[i] = p;
@@ -49,12 +49,12 @@ public class Player {
             }
     }
 
-    Piece getKing(){ return king;}
-    Piece getQueen(){return queen;}
-    Piece[] getBishop(){ return bishop;}
-    Piece[] getRook(){ return rook;}
-    Piece[] getKnight(){ return knight;}
-    Piece[] getPawn(){ return pawn;}
+    IPiece getKing(){ return king;}
+    IPiece getQueen(){return queen;}
+    IPiece[] getBishop(){ return bishop;}
+    IPiece[] getRook(){ return rook;}
+    IPiece[] getKnight(){ return knight;}
+    IPiece[] getPawn(){ return pawn;}
 
     public void setTurn(){
         hasTurn = !hasTurn;

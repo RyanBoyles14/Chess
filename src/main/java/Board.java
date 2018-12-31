@@ -2,7 +2,7 @@ package main.java;
 
 class Board {
 
-    private Piece[][] board = new Piece[8][8];
+    private IPiece[][] board = new IPiece[8][8];
 
     Board(boolean playerStart){
         //initialize the board setup.
@@ -17,21 +17,21 @@ class Board {
                         switch(col){
                             case 0:
                             case 7:
-                                board[row][col] = new Piece(playerStart, "Rook", coord);
+                                board[row][col] = new Rook(playerStart, coord);
                                 break;
                             case 1:
                             case 6:
-                                board[row][col] = new Piece(playerStart, "Knight", coord);
+                                board[row][col] = new Knight(playerStart, coord);
                                 break;
                             case 2:
                             case 5:
-                                board[row][col] = new Piece(playerStart, "Bishop", coord);
+                                board[row][col] = new Bishop(playerStart, coord);
                                 break;
                             case 3:
-                                board[row][col] = new Piece(playerStart, "King", coord);
+                                board[row][col] = new King(playerStart, coord);
                                 break;
                             case 4:
-                                board[row][col] = new Piece(playerStart, "Queen", coord);
+                                board[row][col] = new Queen(playerStart, coord);
                                 break;
                         }
                         break;
@@ -46,9 +46,9 @@ class Board {
     }
 
     Player setPlayer(Player p){
-        for (Piece[] aBoard : board) {
+        for (IPiece[] aBoard : board) {
             for (int col = 0; col < board.length; col++) {
-                Piece piece = aBoard[col];
+                IPiece piece = aBoard[col];
 
                 if (piece == null)
                     continue;
@@ -78,50 +78,46 @@ class Board {
             || initRow < '1' || initRow > '8' || finalRow < '1' || finalRow > '8')
             throw new MovementException("Invalid Command");
 
-        if(!validMovement(initRow, initCol, finalRow, finalCol))
-            throw new MovementException("Invalid Movement");
-    }
-
-    private boolean validMovement(int initRow, int initCol, int finalRow, int finalCol) throws MovementException{
         // Convert A-H and 1-8 from their ASCII value to preferred array index values
         initRow -= 49;
         finalRow -= 49;
         initCol -= 65;
         finalCol -= 65;
 
-        Piece start = board[initRow][initCol];
-        Piece end = board[finalRow][finalCol];
+        if(!validMovement(initRow, initCol, finalRow, finalCol))
+            throw new MovementException("Invalid Movement");
 
-        //TODO: Make sure certain pieces aren't in the path of travel
-        //TODO: Make it so each movement method can work for either side
-        switch(start.getType()){
-            case "King":
-                break;
-            case "Queen":
-                break;
-            case "Rook":
-                break;
-            case "Bishop":
-                break;
-            case "Knight":
-                break;
-            case "Pawn":
-                validPawn(start, end, finalRow, finalCol);
-                break;
-            default:
-                return false;
-        }
-
-        return true;
+        updatePosition(initRow, initCol, finalRow, finalCol);
     }
 
-    private void validPawn(Piece start, Piece end, int finalRow, int finalCol) throws MovementException{
-//        int range = 1;
-//        if(start.atStart())
-//            range = 2;
+    private boolean validMovement(int initRow, int initCol, int finalRow, int finalCol) throws MovementException{
+        IPiece start = board[initRow][initCol];
+        IPiece end = board[finalRow][finalCol];
 
+        boolean valid = false;
+
+        //TODO: Make sure pieces aren't in the path of travel
+        //TODO: Make it so each movement method can work for either side
+        switch(start.getClass().toString()){
+            case "King":
+            case "Queen":
+            case "Rook":
+            case "Bishop":
+            case "Knight":
+            case "Pawn":
+                start.move();
+                break;
+            default:
+        }
+
+        return valid;
+    }
+
+
+    private void updatePosition(int initRow, int initCol, int finalRow, int finalCol){
+        IPiece start = board[initRow][initCol];
         board[finalRow][finalCol] = start;
-        board[start.getCoord()[0]][start.getCoord()[1]] = null;
+        board[initRow][initCol] = null;
         int[] coord = {finalRow, finalCol};
         start.setCoord(coord);
     }
@@ -132,13 +128,13 @@ class Board {
         for(int row = 0; row < board.length; row++){
             System.out.print(row+1 + " |");
             for(int col = 0; col < board.length; col++){
-                Piece piece = board[row][col];
+                IPiece piece = board[row][col];
                 if(piece == null)
                     System.out.print("   ");
-                else if(piece.getType().equals("Knight")){
+                else if(piece.getClass().toString().equals("Knight")){
                     System.out.print(" N ");
                 } else{
-                    System.out.print(" " + piece.getType().charAt(0) + " ");
+                    System.out.print(" " + piece.getClass().toString().charAt(0) + " ");
                 }
 
                 if(col < 7)

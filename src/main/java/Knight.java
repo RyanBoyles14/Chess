@@ -1,16 +1,13 @@
 package main.java;
 
-public class Piece implements IPiece{
+public class Knight implements IPiece{
 
     private boolean alive = true;
-    private boolean atStart = true; //used for checking for pawn's two-space movement or for castling
-    private int[] coord = new int[2];
+    private int[] coord;
     private boolean white;
-    private String type;
 
-    Piece(boolean white, String type, int[] coord){
+    Knight(boolean white, int[] coord){
         this.white = white;
-        this.type = type;
         this.coord = coord;
     }
 
@@ -20,11 +17,11 @@ public class Piece implements IPiece{
 
     public void setCoord(int[] coord){
         this.coord = coord;
-        atStart = false;
     }
 
-    public void move() {
+    public boolean move() {
 
+        return false;
     }
 
     public boolean isWhite() {
@@ -34,12 +31,6 @@ public class Piece implements IPiece{
     public boolean isAlive() {
         return alive;
     }
-
-    public boolean atStart(){
-        return atStart;
-    }
-
-    public String getType(){ return type; }
 
     public int[] getCoord(){ return coord; }
 }
