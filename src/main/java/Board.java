@@ -38,7 +38,7 @@ class Board {
                     case 1:
                         playerStart = !playerStart;
                     case 6:
-                        board[row][col] = new Piece(playerStart, "Pawn", coord);
+                        board[row][col] = new Pawn(playerStart, coord);
                         break;
                 }
             }
