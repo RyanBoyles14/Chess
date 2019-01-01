@@ -21,8 +21,9 @@ public class Pawn implements IPiece{
         atStart = false;
     }
 
-    public boolean move() {
-
+    @Override
+    //range = 1 or 2, depending on position. Diagonal movement assuming a capture. Only forward movement
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -35,4 +36,9 @@ public class Pawn implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return false;
+    }
 }

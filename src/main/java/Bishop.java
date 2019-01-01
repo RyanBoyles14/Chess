@@ -19,8 +19,9 @@ public class Bishop implements IPiece{
         this.coord = coord;
     }
 
-    public boolean move() {
-
+    @Override
+    //Only diagonal, range > 0
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -33,4 +34,9 @@ public class Bishop implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return false;
+    }
 }

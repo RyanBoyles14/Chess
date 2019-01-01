@@ -90,14 +90,36 @@ class Board {
         updatePosition(initRow, initCol, finalRow, finalCol);
     }
 
-    private boolean validMovement(int initRow, int initCol, int finalRow, int finalCol) throws MovementException{
+    /*
+     * Find movement based on the coordinates and the starting piece.
+     */
+    private boolean validMovement(int initRow, int initCol, int finalRow, int finalCol) throws MovementException {
         IPiece start = board[initRow][initCol];
-        IPiece end = board[finalRow][finalCol];
+        boolean movement = false; // The check for whether the movement pattern is acceptable
+        boolean forward = false; //Necessary for pawns
+        String moveType = "";
+        int range = 0;
 
-        boolean valid = false;
+        if (initRow == finalRow && initCol != finalCol){
+            moveType = "horizontal";
+            range = finalCol - initCol;
+        }else if(initCol == finalCol && initRow != finalRow) {
+            moveType = "vertical";
+            range = finalRow - initRow;
+        }else if(Math.abs(finalRow - initRow) == Math.abs(finalCol - initCol)) {
+            moveType = "diagonal";
+            range = finalRow - initRow;
+        }else if(isL())
+            moveType = "l-shape"; //TODO: define L-shape movement
+        else
+            return false;
 
-        //TODO: Make sure pieces aren't in the path of travel
-        //TODO: Make it so each movement method can work for either side
+        if(range > 0 && start.isWhite() || range < 0 && !start.isWhite())
+            forward = true;
+
+        range = Math.abs(range);
+
+        //Check if the movement pattern calculated matches the starting piece
         switch(start.getClass().toString()){
             case "King":
             case "Queen":
@@ -105,14 +127,27 @@ class Board {
             case "Bishop":
             case "Knight":
             case "Pawn":
-                start.move();
+                movement = start.validMove(moveType, range, forward);
                 break;
             default:
         }
 
-        return valid;
+        if(!checkSpaces(initRow, initCol, finalRow, finalCol))
+            return false;
+
+        //TODO: Make sure pieces aren't in the path of travel
+        //TODO: Make it so each movement method can work for either side
+
+        return false;
     }
 
+    private boolean isL(){
+        return false;
+    }
+    
+    private boolean checkSpaces(int initRow, int initCol, int finalRow, int finalCol){
+        return false;
+    }
 
     private void updatePosition(int initRow, int initCol, int finalRow, int finalCol){
         IPiece start = board[initRow][initCol];

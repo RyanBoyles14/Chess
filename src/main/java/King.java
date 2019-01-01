@@ -21,8 +21,9 @@ public class King implements IPiece{
         atStart = false;
     }
 
-    public boolean move() {
-
+    @Override
+    //Must support castling when the King and Rook have not moved. Otherwise, range = 1, any movement but l-shape
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -35,4 +36,10 @@ public class King implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return false;
+    }
+
 }

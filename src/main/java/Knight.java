@@ -19,8 +19,9 @@ public class Knight implements IPiece{
         this.coord = coord;
     }
 
-    public boolean move() {
-
+    @Override
+    //L-shaped movements, only piece that can jump over all other pieces
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -33,4 +34,9 @@ public class Knight implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return false;
+    }
 }

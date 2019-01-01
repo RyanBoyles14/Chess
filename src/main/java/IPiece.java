@@ -6,11 +6,15 @@ public interface IPiece {
 
     void setCoord(int[] coord);
 
-    boolean move();
+    //The valid moveTypes are horizontal, vertical, diagonal, and l-shape
+    boolean validMove(String moveType, int range, boolean forward);
 
     boolean isWhite();
 
     boolean isAlive();
 
     int[] getCoord();
+
+    //return whether the piece is at its starting position
+    boolean getStart();
 }

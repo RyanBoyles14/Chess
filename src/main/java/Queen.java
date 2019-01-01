@@ -19,8 +19,9 @@ public class Queen implements IPiece{
         this.coord = coord;
     }
 
-    public boolean move() {
-
+    @Override
+    // Any movement but l-shape, range > 0
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -33,4 +34,9 @@ public class Queen implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return false;
+    }
 }

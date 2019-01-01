@@ -21,8 +21,9 @@ public class Rook implements IPiece{
         atStart = false;
     }
 
-    public boolean move() {
-
+    @Override
+    //Strictly horizontal/vertical, range > 0, can castle with the King
+    public boolean validMove(String moveType, int range, boolean forward) {
         return false;
     }
 
@@ -35,4 +36,9 @@ public class Rook implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public boolean getStart() {
+        return atStart;
+    }
 }
