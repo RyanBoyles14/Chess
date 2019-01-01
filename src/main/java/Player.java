@@ -17,27 +17,19 @@ public class Player {
     boolean isWhite(){return color;}
 
     void addPiece(IPiece p){
-        switch(p.getClass().toString()){
-            case "King":
-                king = p;
-                break;
-            case "Queen":
-                queen = p;
-                break;
-            case "Rook":
-                addToArray(rook, p);
-                break;
-            case "Bishop":
-                addToArray(bishop, p);
-                break;
-            case "Knight":
-                addToArray(knight, p);
-                break;
-            case "Pawn":
-                addToArray(pawn, p);
-                break;
-            default:
-        }
+        if (p instanceof King)
+            king = p;
+        else if (p instanceof Queen)
+            queen = p;
+        else if (p instanceof Rook)
+            addToArray(rook, p);
+        else if (p instanceof Bishop)
+            addToArray(bishop, p);
+        else if (p instanceof Knight)
+            addToArray(knight, p);
+        else if (p instanceof Pawn)
+            addToArray(pawn, p);
+
     }
 
 

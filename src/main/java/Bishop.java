@@ -5,6 +5,7 @@ public class Bishop implements IPiece{
     private boolean alive = true;
     private int[] coord;
     private boolean white;
+    private String type = "Bishop";
 
     Bishop(boolean white, int[] coord){
         this.white = white;
@@ -34,6 +35,11 @@ public class Bishop implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public String getType() {
+        return type;
+    }
 
     @Override
     public boolean getStart() {

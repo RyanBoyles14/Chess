@@ -49,15 +49,21 @@ public class Chess implements Callable<Void> {
     private void startGame(){
         Player white = board.setPlayer(new Player(true));
         Player black = board.setPlayer(new Player(false));
+        Player cur = white;
 
         //TODO: get command from user
         //TODO: Allow saving
 
         //Run the game so long as both kings are alive
-        //while(white.getKing().isAlive() && black.getKing().isAlive()){
+        while(white.getKing().isAlive() && black.getKing().isAlive()){
             board.display();
             parseCmd();
-        //}
+
+            if(cur == white)
+                cur = black;
+            else
+                cur = white;
+        }
 
         board.display();
 

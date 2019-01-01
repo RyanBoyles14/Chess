@@ -5,6 +5,7 @@ public class Queen implements IPiece{
     private boolean alive = true;
     private int[] coord;
     private boolean white;
+    private String type = "Queen";
 
     Queen(boolean white, int[] coord){
         this.white = white;
@@ -34,6 +35,11 @@ public class Queen implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public String getType() {
+        return type;
+    }
 
     @Override
     public boolean getStart() {

@@ -15,6 +15,8 @@ public interface IPiece {
 
     int[] getCoord();
 
+    String getType();
+
     //return whether the piece is at its starting position
     boolean getStart();
 }

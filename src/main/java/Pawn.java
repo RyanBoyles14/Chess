@@ -6,6 +6,7 @@ public class Pawn implements IPiece{
     private boolean atStart = true; //used for checking for pawn's two-space movement or for castling
     private int[] coord;
     private boolean white;
+    private String type = "Pawn";
 
     Pawn(boolean white, int[] coord){
         this.white = white;
@@ -36,6 +37,11 @@ public class Pawn implements IPiece{
     }
 
     public int[] getCoord(){ return coord; }
+
+    @Override
+    public String getType() {
+        return type;
+    }
 
     @Override
     public boolean getStart() {
