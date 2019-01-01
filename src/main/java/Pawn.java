@@ -3,7 +3,8 @@ package main.java;
 public class Pawn implements IPiece{
 
     private boolean alive = true;
-    private boolean atStart = true; //used for checking for pawn's two-space movement or for castling
+    private boolean atStart = true; //used for checking for pawn's two-space movement
+    private boolean doubleStep = false; //check if the pawn's last move was a double-step. Important for checking en passant captures
     private int[] coord;
     private boolean white;
     private String type = "Pawn";
@@ -24,8 +25,13 @@ public class Pawn implements IPiece{
 
     @Override
     //range = 1 or 2, depending on position. Diagonal movement assuming a capture. Only forward movement
-    public boolean validMove(String moveType, int range, boolean forward) {
-        return false;
+    public boolean validMove(String moveType, int range, boolean forward) throws MovementException {
+        if(forward && ((range == 2 && atStart) || range == 1) && moveType.equals("vertical"))
+            return false;
+        else if(forward && range == 1 && moveType.equals("diagonal"))
+            return true;
+        else
+            throw new MovementException("That is not a valid move for a Pawn.");
     }
 
     public boolean isWhite() {

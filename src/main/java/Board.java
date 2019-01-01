@@ -76,7 +76,7 @@ class Board {
 
         String[] parts = command.split("\\s");
         if(parts.length != 2 || parts[0].length() != 2 || parts[1].length() != 2)
-            throw new MovementException("Invalid Command");
+            throw new MovementException("That is not a valid command.");
 
         char initCol = parts[0].toUpperCase().charAt(0);
         char initRow = parts[0].toUpperCase().charAt(1);
@@ -86,7 +86,7 @@ class Board {
         //Check if the player's command is within the correct range
         if(initCol < 'A' || initCol > 'H' || finalCol < 'A' || finalCol > 'H'
             || initRow < '1' || initRow > '8' || finalRow < '1' || finalRow > '8')
-            throw new MovementException("Invalid Command");
+            throw new MovementException("That is not a valid command.");
 
         // Convert A-H and 1-8 from their ASCII value to preferred array index values
         this.initRow = initRow -= 49;
@@ -94,8 +94,12 @@ class Board {
         this.initCol = initCol -= 65;
         this.initCol = finalCol -= 65;
 
-        if(!validMovement())
-            throw new MovementException("Invalid Movement");
+        try{
+            validMovement();
+        }catch(MovementException e){
+            throw e;
+        }
+
 
         updatePosition();
     }
@@ -111,6 +115,9 @@ class Board {
         boolean right = false;
         int range = 0;
 
+        if(start == null)
+            throw new MovementException("There is no piece at " + (char)(initCol+65)+""+initRow + ".");
+
         if (initRow == finalRow && initCol != finalCol){
             moveType = "horizontal";
             range = finalCol - initCol;
@@ -123,29 +130,25 @@ class Board {
         }else if(isL())
             moveType = "l-shape"; //TODO: define L-shape movement
         else
-            return false;
+            throw new MovementException("That is not a valid move.");
 
         if((moveType.equals("horizontal") || moveType.equals("diagonal")) && finalCol > initCol)
             right = true;
 
-        if((moveType.equals("vertical") || moveType.equals("diagonal")) && finalRow > initRow)
+        if((moveType.equals("vertical") || moveType.equals("diagonal")) && initRow > finalRow)
             up = true;
 
         if((moveType.equals("vertical") || moveType.equals("diagonal"))
-                && (range > 0 && start.isWhite() || range < 0 && !start.isWhite()))
+                && (range < 0 && start.isWhite() || range > 0 && !start.isWhite()))
             forward = true;
 
         range = Math.abs(range);
 
         //Check if the movement pattern calculated matches the starting piece
-        if (start instanceof King || start instanceof Queen || start instanceof Rook || start instanceof Bishop
-            || start instanceof Knight || start instanceof Pawn)
-            movement = start.validMove(moveType, range, forward);
-        else
-            return false;
+        //Returns true if the setup allows for a special move (ie en passant, castling)
+        boolean specialCase = start.validMove(moveType, range, forward);
 
-        if(!checkSpaces(start, range, up, right))
-            return false;
+        checkSpaces(start, range, up, right);
 
         //TODO: Make sure pieces aren't in the path of travel
         //TODO: Make it so each movement method can work for either side
@@ -157,7 +160,7 @@ class Board {
         return false;
     }
 
-    private boolean checkSpaces(IPiece start, int range, boolean up, boolean right){
+    private boolean checkSpaces(IPiece start, int range, boolean up, boolean right) throws MovementException{
         IPiece space = null;
 
         int x = 1, y = 1;
@@ -181,8 +184,11 @@ class Board {
             }
 
             if (space != null){
-                if(i < range || (i == range && start.isWhite() == space.isWhite()))
-                    return false;
+                if(i < range)
+                    throw new MovementException("There is a piece in the " + start.getType() + "'s way.");
+                else if(i == range && start.isWhite() == space.isWhite())
+                    throw new MovementException("The piece at " + (char)(finalCol + 65) + "" + finalRow + " cannot be captured.");
+
             }
         }
 

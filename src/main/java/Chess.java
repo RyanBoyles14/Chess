@@ -55,7 +55,7 @@ public class Chess implements Callable<Void> {
         //TODO: Allow saving
 
         //Run the game so long as both kings are alive
-        while(white.getKing().isAlive() && black.getKing().isAlive()){
+        //while(white.getKing().isAlive() && black.getKing().isAlive()){
             board.display();
             parseCmd();
 
@@ -63,7 +63,7 @@ public class Chess implements Callable<Void> {
                 cur = black;
             else
                 cur = white;
-        }
+        //}
 
         board.display();
 
@@ -87,9 +87,8 @@ public class Chess implements Callable<Void> {
         boolean invalid = true;
 
         while(invalid) {
-            System.out.println("\nInsert a command:");
-            String cmd = sc.next();
-            String[] parts = cmd.split("\\s");
+            System.out.println("Insert a command:\n");
+            String cmd = "A7 A6";
             try {
                 if(cmd.equalsIgnoreCase("HELP")){
                     help();
@@ -104,12 +103,11 @@ public class Chess implements Callable<Void> {
                     continue;
                 } else if(cmd.equalsIgnoreCase("LOAD")){
 
-                } else if(parts.length != 2 || parts[0].length() != 2 || parts[1].length() != 2)
-                    throw new MovementException("That is not a valid command.");
-                board.move(cmd);
+                } else
+                    board.move(cmd);
                 invalid = false;
             } catch (MovementException e) {
-                System.out.println("\n" + e + " Type \"help\" for assistance.\n");
+                System.out.println(e + " Type \"help\" for assistance.\n");
             }
         }
     }
@@ -130,18 +128,18 @@ public class Chess implements Callable<Void> {
     }
 
     private void quit(Scanner sc){
-        System.out.println("\nAre you sure you want to quit without saving? (Y|N)");
+        System.out.println("Are you sure you want to quit without saving? (Y|N)\n");
 
         boolean invalid = true;
         while(invalid) {
             String cmd = sc.next();
             if (cmd.equalsIgnoreCase("Y")) {
-                System.out.println("\nSee you later!");
+                System.out.println("See you later!\n");
                 System.exit(0);
             } else if (cmd.equalsIgnoreCase("N")) {
                 invalid = false;
             } else {
-                System.out.println("\nInvalid response. Please answer with Y or N.");
+                System.out.println("Invalid response. Please answer with Y or N.\n");
             }
         }
     }
